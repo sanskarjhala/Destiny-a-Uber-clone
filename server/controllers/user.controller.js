@@ -35,7 +35,7 @@ exports.registerUser = async (req, res) => {
           expiresIn: "24h"
         }
       );
-      
+
     return res.status(200).json({
       success: true,
       token: token,
@@ -70,16 +70,16 @@ exports.userLogin = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { email: user.email, id: user._id, role: user.role },
+      { email: user.email, id: user._id},
       process.env.JWT_SECRET,
       {
         expiresIn: "24h"
       }
     );
-    console.log("1");
     res.cookie("token", token);
-
+    
     res.status(200).json({ token, user });
+
   } catch (error) {
     return res.status(500).json({
       message: "something went wrong while login the user",
@@ -89,7 +89,11 @@ exports.userLogin = async (req, res) => {
 };
 
 exports.getUserProfile = async (req, res) => {
-  return res.status(200).json(req.user);
+  try {
+    return res.status(200).json(req.user);
+  } catch (error) {
+    return res.status(500).json({message:"Error whiule fetching the User profile" , error:error});
+  }
 };
 
 exports.logotUser = async (req, res) => {
