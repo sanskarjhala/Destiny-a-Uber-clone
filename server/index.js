@@ -5,7 +5,9 @@ const cors = require('cors');
 const  {dbConnection}  = require("./config/database");
 const userRoutes = require('./routes/user.routes')
 const cookieParser = require('cookie-parser');
+const captainRoutes = require('./routes/captain.routes');
 
+//database connection
 dbConnection();
 
 //creating the server 
@@ -16,7 +18,8 @@ app.use(cors());
 
 
 //routes
-app.use("/users" , userRoutes)
+app.use("/users" , userRoutes);
+app.use("/captains" , captainRoutes);
 
 const PORT  = process.env.PORT;
 app.listen(PORT , () => {

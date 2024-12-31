@@ -28,7 +28,14 @@ exports.registerUser = async (req, res) => {
       password: hashPassword,
     });
 
-    const token = User.generateAuthToken();
+    const token = jwt.sign(
+        {id: user._id,},
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "24h"
+        }
+      );
+      
     return res.status(200).json({
       success: true,
       token: token,
@@ -64,7 +71,10 @@ exports.userLogin = async (req, res) => {
 
     const token = jwt.sign(
       { email: user.email, id: user._id, role: user.role },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h"
+      }
     );
     console.log("1");
     res.cookie("token", token);
