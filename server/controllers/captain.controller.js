@@ -14,14 +14,15 @@ exports.registerCaptain = async (req, res) => {
     }
 
     const { fullName, email, password, vehicle } = req.body;
-    const hashPassword = await captainModel.hashPassword(password);
 
+    const hashPassword = await captainModel.hashPassword(password);
+    
     const alreadyExist = await captainModel.findOne({ email: email });
 
     if (alreadyExist) {
       return res.status(403).json({ message: "Captain already exists" });
     }
-
+    
     const captain = await captainModel.create({
       fullName: fullName,
       email: email,

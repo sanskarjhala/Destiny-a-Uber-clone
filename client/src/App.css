@@ -4,3 +4,13 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.form-style-web{
+  display:flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 1.5rem /* 24px */;
+  line-height: 2rem /* 32px */;
+}

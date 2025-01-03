@@ -8,7 +8,12 @@ const Form = ({text1 , text2 , user}) => {
     const{ register , handleSubmit , formState:{errors} , setValue} = useForm();
 
     const onSubmit = async(data) => {
-        console.log(" Form Data ", data)
+        const newUser = {
+            email:data.email,
+            password:data.password,
+        }
+
+        
     };
 
     return (
@@ -59,7 +64,7 @@ const Form = ({text1 , text2 , user}) => {
                                       Login
                               </button>
                       </div>
-                      <p className='text-center font-medium'>{text1} <Link to='/signup' className='text-blue-600'>{text2}</Link></p>
+                      <p className='text-center font-medium'>{text1} <Link to={user ? '/signup' : "/captain-signup"} className='text-blue-600'>{text2}</Link></p>
               </form>
       </div>
     )
