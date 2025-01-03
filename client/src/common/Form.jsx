@@ -1,19 +1,31 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { userLogin } from '../services/operations/userApi';
+import { captainLogin } from '../services/operations/captainApi';
+import { UserDataContext } from '../context/UserContext';
+import { CaptainDataContext } from '../context/CaptainContext';
 
 
 const Form = ({text1 , text2 , user}) => {
 
-    const{ register , handleSubmit , formState:{errors} , setValue} = useForm();
+    const{ register , handleSubmit , formState:{errors}} = useForm();
+    const navigate = useNavigate();
+    const {setUser} = useContext(UserDataContext);
+    const {setCaptain} = useContext(CaptainDataContext);
 
     const onSubmit = async(data) => {
-        const newUser = {
+        const credentials = {
             email:data.email,
             password:data.password,
         }
 
-        
+        if(user){
+            userLogin(credentials , navigate , setUser);
+        }
+        else{
+            captainLogin(credentials , navigate , setCaptain);
+        }
     };
 
     return (
