@@ -11,6 +11,7 @@ import UserProtectedRoute from './common/UserProtectedRoute'
 import CaptainProtectedRoute from './common/CaptainProtectedRoute'
 import CaptainDashboard from './pages/CaptainDashboard'
 import Riding from './pages/Riding'
+import CaptainRiding from './pages/CaptainRiding'
 
 const App = () => {
   return (
@@ -35,13 +36,21 @@ const App = () => {
             </CaptainProtectedRoute>
           }
         />
-        {/* Logout Route*/}
+        {/* Logout Route left*/}
         <Route
           path='/riding'
           element={
             <UserProtectedRoute>
               <Riding/>
             </UserProtectedRoute>
+          }
+        />
+        <Route
+          path='/captain-riding'
+          element={
+            <CaptainProtectedRoute>
+              <CaptainRiding/>
+            </CaptainProtectedRoute>
           }
         />
 

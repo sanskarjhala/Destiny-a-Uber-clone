@@ -23,6 +23,7 @@ export const captainSignup = async (newCaptain, navigate, setCaptain) => {
     toast.success("Login Successfully");
     setCaptain(response.data.captain);
     localStorage.setItem("token", response.data.token);
+    localStorage.setItem()
     navigate("/captain-Dashboard");
   } catch (error) {
     console.log("CAPTAIN SIGNUP API ERROR............", error);
