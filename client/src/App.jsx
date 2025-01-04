@@ -10,10 +10,11 @@ import UserDashboard from './pages/UserDashboard'
 import UserProtectedRoute from './common/UserProtectedRoute'
 import CaptainProtectedRoute from './common/CaptainProtectedRoute'
 import CaptainDashboard from './pages/CaptainDashboard'
+import Riding from './pages/Riding'
 
 const App = () => {
   return (
-    <div>
+    <div className='overflow-hidden'>
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/login' element={<UserLogin/>}/>
@@ -32,6 +33,15 @@ const App = () => {
             <CaptainProtectedRoute>
               <CaptainDashboard/>
             </CaptainProtectedRoute>
+          }
+        />
+        {/* Logout Route*/}
+        <Route
+          path='/riding'
+          element={
+            <UserProtectedRoute>
+              <Riding/>
+            </UserProtectedRoute>
           }
         />
 
