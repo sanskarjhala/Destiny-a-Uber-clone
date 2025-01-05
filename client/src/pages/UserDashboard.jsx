@@ -8,12 +8,14 @@ import VehiclePanel from "../components/VehiclePanel";
 import ConfirmRide from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
+import { getLocationSuggestion } from "../services/operations/mapsApi";
 
 const UserDashboard = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
   const [panelOpen, setPanelOpen] = useState(false);
@@ -21,6 +23,13 @@ const UserDashboard = () => {
   const [ConfirmRidePanel, setConfirmRidePanel] = useState(false);
   const [vehicleFound , setVehicleFound] = useState(false);
   const [waitingForDriver , setWaitingForDriver] = useState(false);
+  const [pickupSuggestions, setPickupSuggestions ] = useState([]);
+  const [destinationSuggestions, setDestinationSuggestions ] = useState([]);
+  const [activeField, setActiveField] = useState('');
+
+  const [ pickup, setPickup ] = useState('')
+  const [ destination, setDestination ] = useState('') 
+
 
   const panelRef = useRef(null);
   const panelClose = useRef(null);
@@ -28,10 +37,41 @@ const UserDashboard = () => {
   const confirmRidePanelRef = useRef(null);
   const vehicleFoundRef = useRef(null);
   const waitingForDriverRef = useRef(null);
+  let deBouncerTimer;
 
   const onSubmit = async (data) => {
     console.log(data);
   };
+
+  const handlePickupChange = async (e) => {
+    setPickup(e.target.value);
+    clearTimeout(deBouncerTimer);
+    deBouncerTimer = setTimeout(async () => {
+      const suggestions = await getLocationSuggestion({ input: e.target.value }, localStorage.getItem("token"));
+      setPickupSuggestions(suggestions);
+      console.log("pickup suggeastions" , suggestions);
+    } , 1000)
+    
+  };
+
+  const handleDestinationChange = async (e) => {
+    setDestination(e.target.value);
+    clearTimeout(deBouncerTimer);
+    deBouncerTimer = setTimeout(async () => {
+      const suggestions = await getLocationSuggestion({ input: e.target.value }, localStorage.getItem("token"));
+      setDestinationSuggestions(suggestions);
+      console.log("destination suggeastions" , suggestions);
+    } , 1000)
+  }
+
+  async function findTrip() {
+    setVehiclePanel(true)
+    setPanelOpen(false)
+
+    // setFare(response.data)
+
+}
+
 
   useGSAP(() => {
     if (panelOpen) {
@@ -125,28 +165,37 @@ const UserDashboard = () => {
           <h4 className="text-2xl font-semibold">Find a Trip</h4>
           <form>
             <div className="line absolute h-16 w-1 top-[45%] left-10 bg-gray-700 rounded-full"></div>
-            <input
+            <input 
               placeholder="Add a pickup location"
               className="bg-[#eeeeee] px-12 py-2 text-lg rounded-lg w-full mt-5"
-              {...register("pickup", { required: true })}
+              {...register("pickup", { required: true , onChange: (e) => handlePickupChange(e)})}
               onClick={() => {
                 setPanelOpen(true);
+                setActiveField('pickup');
               }}
             />
             <input
               placeholder="Enter your Destination"
               className="bg-[#eeeeee] px-12 py-2 text-lg rounded-lg w-full mt-3"
-              {...register("destination", { required: true })}
+              {...register("destination", { required: true , onChange: (e) => handleDestinationChange(e) , value: destination})}
               onClick={() => {
                 setPanelOpen(true);
+                setActiveField('destination');
               }}
             />
           </form>
+          
         </div>
         <div ref={panelRef} className="h-0 bg-white">
           <LocationSearchPanel
+            suggestions={activeField === 'pickup' ? pickupSuggestions : destinationSuggestions}
             setVehiclePanel={setVehiclePanel}
             setPanelOpen={setPanelOpen}
+            setPickup={setPickup}
+            setDestination={setDestination}
+            activeField={activeField}
+            setValue={setValue}
+            findTrip={findTrip}
           />
         </div>
       </div>

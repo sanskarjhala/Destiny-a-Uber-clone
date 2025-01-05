@@ -1,31 +1,36 @@
+
 import React from "react";
 
-const LocationSearchPanel = ({setVehiclePanel , setPanelOpen}) => {
-  const location = [
-    "24B, Near Kappor's Cafe, ABCD School, Indore",
-    "22B, Near Kappor's Cafe, ABCD School, Indore",
-    "21B, Near Kappor's Cafe, ABCD School, Indore",
-    "20B, Near Kappor's Cafe, ABCD School, Indore",
-  ];
+const LocationSearchPanel = ({setVehiclePanel , setPanelOpen ,findTrip, setPickup , setDestination,activeField , suggestions , setValue}) => {
+  const handleSuggestionClick = (suggestion) => {
+    if (activeField === 'pickup') {
+        setPickup(suggestion)
+        setValue('pickup' , suggestion)
+    } else if (activeField === 'destination') {
+        setDestination(suggestion)
+        setValue('destination' , suggestion)
+    }
+    // setVehiclePanel(true)
+    // setPanelOpen(false)
+}
   return (
     <div>
-      {location.map((elem, id) => (
-        <div
-          key={id}
-        //   onClick={() => handleSuggestionClick(elem)}
-        onClick={() => {
-            setVehiclePanel(true);
-            setPanelOpen(false);
-        }}
-          className="flex gap-4 border-2 p-3 border-gray-50 active:border-black rounded-xl items-center my-2 justify-start"
-        >
-          <h2 className="bg-[#eee] h-8 flex items-center justify-center w-12 rounded-full">
-            <i className="ri-map-pin-fill"></i>
-          </h2>
-          <h4 className="font-medium">{elem}</h4>
+            <button
+                        onClick={findTrip}
+                        className='bg-black text-white px-4 py-2 rounded-lg  w-full'>
+                        Find Trip
+                      </button>
+
+            {/* Display fetched suggestions */}
+            {
+                suggestions.map((elem, idx) => (
+                    <div key={idx} onClick={() => handleSuggestionClick(elem)} className='flex gap-4 border-2 p-3 border-gray-50 active:border-black rounded-xl items-center my-2 justify-start'>
+                        <h2 className='bg-[#eee] h-8 flex items-center justify-center w-12 rounded-full'><i className="ri-map-pin-fill"></i></h2>
+                        <h4 className='font-medium'>{elem}</h4>
+                    </div>
+                ))
+            }
         </div>
-      ))}
-    </div>
   );
 };
 

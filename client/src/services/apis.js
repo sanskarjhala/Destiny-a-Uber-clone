@@ -14,3 +14,7 @@ export const captainEndpoints = {
     CAPTAIN_PROFILE: BASE_URL + '/captains/profile',
     CAPTAIN_LOGOUT: BASE_URL + '/captains/logout'
 }
+
+export const mapsEndpoints = {
+    GET_LOCATION_SUGGESTIONS: BASE_URL + '/maps/suggestions'
+}
