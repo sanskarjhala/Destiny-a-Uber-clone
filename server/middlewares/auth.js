@@ -52,7 +52,7 @@ exports.authCaptain = async (req, res, next) => {
       req.captain = captain;
       return next();
     } catch (error) {
-      return res.status(401).json({ message: "Unauthorized access" });
+      return res.status(401).json({ message: "Unauthorized access 123" });
     }
   } catch (error) {
     return res.status(500).json({ message: "Error while decoding the token " });

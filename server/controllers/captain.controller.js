@@ -101,7 +101,7 @@ exports.getCaptainProfile = async (req, res) => {
 
 exports.logoutCaptain = async (req, res) => {
   try {
-    const token = req.cookies.token || req.headers.authorization.split(" ")[1];
+    const token = req.cookies.token || req.header("Authorization").replace("Bearer ", "");
     res.clearCookie("token");
 
     await baclklistTokenModel.create({ token });
