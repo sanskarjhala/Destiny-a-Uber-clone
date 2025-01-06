@@ -16,5 +16,10 @@ export const captainEndpoints = {
 }
 
 export const mapsEndpoints = {
-    GET_LOCATION_SUGGESTIONS: BASE_URL + '/maps/suggestions'
+    GET_LOCATION_SUGGESTIONS: BASE_URL + '/maps/suggestions',
+}
+
+export const rideEndpoints = {
+    GET_FARE: BASE_URL + '/rides/fare',
+    CREATE_RIDE: BASE_URL + '/rides/create'
 }

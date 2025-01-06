@@ -9,6 +9,7 @@ import ConfirmRide from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
 import { getLocationSuggestion } from "../services/operations/mapsApi";
+import { createRideApi, getFare } from "../services/operations/rideApi";
 
 const UserDashboard = () => {
   const {
@@ -26,6 +27,8 @@ const UserDashboard = () => {
   const [pickupSuggestions, setPickupSuggestions ] = useState([]);
   const [destinationSuggestions, setDestinationSuggestions ] = useState([]);
   const [activeField, setActiveField] = useState('');
+  const [fare, setFare] = useState({});
+  const [vehicleType, setVehicleType] = useState('');
 
   const [ pickup, setPickup ] = useState('')
   const [ destination, setDestination ] = useState('') 
@@ -67,10 +70,20 @@ const UserDashboard = () => {
   async function findTrip() {
     setVehiclePanel(true)
     setPanelOpen(false)
+    const response = await getFare({ pickup, destination }, localStorage.getItem("token"));
+    setFare(response);
+  }
 
-    // setFare(response.data)
-
-}
+  const createRide = async () => {
+    const data = {
+      pickup,
+      destination,
+      vehicleType,
+      fare: fare[vehicleType]
+    }
+    const response = await createRideApi(data, localStorage.getItem("token"));
+    console.log(response);
+  }
 
 
   useGSAP(() => {
@@ -204,21 +217,40 @@ const UserDashboard = () => {
         ref={vehiclePanelRef}
         className="fixed  w-full bg-white z-10 bottom-0 translate-y-full px-3 py-8"
       >
-        <VehiclePanel setVehiclePanel={setVehiclePanel} setConfirmRidePanel={setConfirmRidePanel} />
+        <VehiclePanel 
+          setVehiclePanel={setVehiclePanel} 
+          setConfirmRidePanel={setConfirmRidePanel}
+          fare={fare}
+          setVehicleType={setVehicleType}
+           />
       </div>
 
       <div
         ref={confirmRidePanelRef}
         className="fixed  w-full bg-white z-10 bottom-0 translate-y-full px-3 py-12"
       >
-        <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound}/>
+        <ConfirmRide
+         setConfirmRidePanel={setConfirmRidePanel} 
+         setVehicleFound={setVehicleFound}
+          createRide={createRide}
+          pickup={pickup}
+          destination={destination}
+          fare={fare}
+          vehicleType={vehicleType}
+         />
       </div>
 
       <div
         ref={vehicleFoundRef}
         className="fixed  w-full bg-white z-10 bottom-0 translate-y-full px-3 py-12 "
       >
-        <LookingForDriver setVehicleFound={setVehicleFound}/>
+        <LookingForDriver 
+          setVehicleFound={setVehicleFound}
+          pickup={pickup}
+          destination={destination}
+          fare={fare}
+          vehicleType={vehicleType}
+        />
       </div>
 
       <div

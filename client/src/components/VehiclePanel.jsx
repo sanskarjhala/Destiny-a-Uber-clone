@@ -3,7 +3,7 @@ import motoImage from "../assets/moto.webp";
 import autoImage from "../assets/auto.webp";
 import carImage from  "../assets/car.png"
 
-const VehiclePanel = ({ setVehiclePanel, setConfirmRidePanel }) => {
+const VehiclePanel = ({ setVehiclePanel, setConfirmRidePanel , fare , setVehicleType }) => {
   return (
     <div>
       <h5
@@ -20,6 +20,7 @@ const VehiclePanel = ({ setVehiclePanel, setConfirmRidePanel }) => {
       <div
         onClick={() => {
           setConfirmRidePanel(true);
+          setVehicleType("car");
         }}
         className="flex w-full border-2 mb-2 active:border-black bg-gray-100 rounded-xl items-center justify-between p-3"
       >
@@ -39,12 +40,13 @@ const VehiclePanel = ({ setVehiclePanel, setConfirmRidePanel }) => {
             Affordable, compact rides
           </p>
         </div>
-        <h2 className="text-xl font-semibold">$193.20</h2>
+        <h2 className="text-xl font-semibold">₹{fare.car}</h2>
       </div>
 
       <div
         onClick={() => {
           setConfirmRidePanel(true);
+          setVehicleType("moto");
         }}
         className="flex w-full border-2 mb-2 active:border-black bg-gray-100 rounded-xl items-center justify-between p-3"
       >
@@ -61,12 +63,13 @@ const VehiclePanel = ({ setVehiclePanel, setConfirmRidePanel }) => {
             Affordable, compact rides
           </p>
         </div>
-        <h2 className="text-xl font-semibold">$65</h2>
+        <h2 className="text-xl font-semibold">₹{fare.moto}</h2>
       </div>
 
       <div
         onClick={() => {
           setConfirmRidePanel(true);
+          setVehicleType("auto");
         }}
         className="flex w-full border-2 mb-2 active:border-black bg-gray-100  rounded-xl items-center justify-between p-3"
       >
@@ -83,7 +86,7 @@ const VehiclePanel = ({ setVehiclePanel, setConfirmRidePanel }) => {
             Affordable, compact rides
           </p>
         </div>
-        <h2 className="text-xl font-semibold">$193.20</h2>
+        <h2 className="text-xl font-semibold">₹{fare.auto}</h2>
       </div>
     </div>
   );

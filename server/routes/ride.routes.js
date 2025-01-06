@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { body } = require('express-validator');
-const { createRide } = require('../controllers/ride.controller');
+const { body , query } = require('express-validator');
+const { createRide, getFare } = require('../controllers/ride.controller');
 const { authUser } = require('../middlewares/auth');
 
 
@@ -12,5 +12,10 @@ router.post('/create' ,authUser , [
     body('destination').isString().isLength({min: 3}).withMessage('Invalid Destination Address'),
     body('vehicleType').isString().isIn(['auto', 'car', 'moto']).withMessage('Invalid Vehicle Type') 
 ] , createRide )
+
+router.get('/fare' ,authUser , [
+    query('pickup').isString().isLength({min: 3}).withMessage('Invalid Pickup Address'),
+    query('destination').isString().isLength({min: 3}).withMessage('Invalid Destination Address'),
+] , getFare )
 
 module.exports = router;
