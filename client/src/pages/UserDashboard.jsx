@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -10,6 +10,8 @@ import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
 import { getLocationSuggestion } from "../services/operations/mapsApi";
 import { createRideApi, getFare } from "../services/operations/rideApi";
+import { SocketDataContext } from "../context/SocketContext";
+import { UserDataContext } from "../context/UserContext";
 
 const UserDashboard = () => {
   const {
@@ -41,6 +43,14 @@ const UserDashboard = () => {
   const vehicleFoundRef = useRef(null);
   const waitingForDriverRef = useRef(null);
   let deBouncerTimer;
+
+  const { socket } = useContext(SocketDataContext);
+  const { user } = useContext(UserDataContext);
+
+  useEffect(() => {
+    socket.emit('join' , {userType: "user" , userId: user._id})
+  } , [user]);
+
 
   const onSubmit = async (data) => {
     console.log(data);
